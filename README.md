@@ -1,22 +1,21 @@
-# Django Project with Docker and SQLite
+# Django Project with Docker, SQLite & Redis
 
 ## 🚀 Overview
-This project is a Django web application that runs inside a **Docker container** using SQLite as the database.
+This project is a Django web application that runs inside a **Docker container** using SQLite as the database and **Redis** for caching.
 
 ## 📂 Project Structure
 ```
-├── myproject/ ( BharatFD)       # Django Project
+├── myproject/        # Django Project
+│   ├── myapp/        # Django App
 │   ├── settings.py   # Django Settings
 │   ├── urls.py       # URL Routing
 │   ├── views.py      # Views
 │   ├── models.py     # Database Models
 │   ├── templates/    # HTML Templates
-├──  Django APP ( APP )
 ├── Dockerfile        # Docker Configuration
 ├── docker-compose.yml # Docker Compose Config
 ├── requirements.txt  # Python Dependencies
 ├── README.md         # Project Documentation
-├──  sqlite
 ```
 
 ---
@@ -29,8 +28,8 @@ This project is a Django web application that runs inside a **Docker container**
 
 ### 🔹 2. Clone the Repository
 ```bash
-git clone [https://github.com/yourusername/yourrepo.git](https://github.com/SINGHBP29/translator.git)
-cd new1
+git clone [GitHub](https://github.com/SINGHBP29/translator.git)
+cd app
 ```
 
 ### 🔹 3. Build and Run with Docker
@@ -73,6 +72,36 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
+    depends_on:
+      - redis
+
+  redis:
+    image: "redis:alpine"
+    container_name: redis_cache
+    ports:
+      - "6379:6379"
+```
+
+---
+
+## 📜 Configure Redis in Django
+
+### **1. Install Redis Python Client**
+```bash
+pip install django-redis
+```
+
+### **2. Update `settings.py`**
+```python
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://redis:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
 ```
 
 ---
@@ -103,3 +132,4 @@ services:
 
 ### 💬 Need Help?
 If you face any issues, feel free to open an **issue** on GitHub! 🚀
+
