@@ -29,8 +29,8 @@ This project is a Django web application that runs inside a **Docker container**
 
 ### 🔹 2. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/yourrepo.git
-cd yourrepo
+git clone [https://github.com/yourusername/yourrepo.git](https://github.com/SINGHBP29/translator.git)
+cd new1
 ```
 
 ### 🔹 3. Build and Run with Docker
