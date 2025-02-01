@@ -48,6 +48,70 @@ docker exec -it django_app python manage.py createsuperuser
 - **Admin Panel**: [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/)
 
 ---
+Features Implemented
+
+✅ 1. FAQ Model with WYSIWYG Editor
+
+Uses django-ckeditor for rich text support.
+
+Stores FAQs with multilingual translations.
+
+✅ 2. API Development
+
+Implements Django REST Framework (DRF).
+
+Supports ?lang= query parameter for language-based responses.
+
+✅ 3. Caching with Redis
+
+Uses django-redis for performance optimization.
+
+Stores translated FAQs in cache.
+
+✅ 4. Multi-language Translation
+
+Integrates googletrans for automatic translations.
+
+Fallback mechanism to English if translation fails.
+
+✅ 5. Admin Panel
+
+Registers FAQ model for easy management.
+
+Supports django-ckeditor in admin for rich text editing.
+
+✅ 6. Unit Testing
+
+Uses pytest for testing.
+
+Covers models, API responses, and caching mechanisms.
+
+✅ 7. Docker & Deployment
+
+Includes Dockerfile and docker-compose.yml.
+
+Can be deployed to Heroku or AWS.
+
+API Endpoints
+
+Retrieve FAQs
+
+# Default (English)
+curl http://localhost:8000/api/faqs/
+
+# Hindi Translation
+curl http://localhost:8000/api/faqs/?lang=hi
+
+# Bengali Translation
+curl http://localhost:8000/api/faqs/?lang=bn
+
+Admin Panel
+
+Access the Django Admin at http://127.0.0.1:8000/admin/
+
+
+
+
 
 ## 🐳 Docker Configuration
 
@@ -126,10 +190,9 @@ CACHES = {
 ## 💡 Next Steps
 - Add **Redis** for caching.
 - Deploy with **Gunicorn & Nginx**.
-- Use **PostgreSQL** instead of SQLite.
 
 ---
 
 ### 💬 Need Help?
-If you face any issues, feel free to open an **issue** on GitHub! 🚀
+If you face any issues, feel free to open an **issue** on GitHub! or Email me at **bhanups292004@gmail.com** 🚀
 
