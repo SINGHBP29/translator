@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask a Question</title>
+    <script>
+        function submitForm(event) {
+            event.preventDefault();
+            let formData = new FormData(document.getElementById("questionForm"));
+
+            fetch("/api/submit-question/", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => alert(data.message))
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+</head>
+<body>
+    <h2>Submit a Question</h2>
+    <form id="questionForm" onsubmit="submitForm(event)">
+        <label for="question">Enter Your Question:</label>
+        <textarea name="question" id="question" required></textarea>
+
+        <label for="language">Select Language:</label>
+        <select name="language" id="language">
+            <option value="hi">Hindi</option>
+            <option value="bn">Bengali</option>
+            <option value="en">English</option>
+        </select>
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

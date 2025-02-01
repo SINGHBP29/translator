@@ -1,0 +1,77 @@
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQs</title>
+    <script>
+        function loadFAQs() {
+            let lang = document.getElementById("language").value;
+
+            fetch(`/api/faqs/?lang=${lang}`)
+            .then(response => response.json())
+            .then(data => {
+                let output = "";
+                data.forEach(faq => {
+                    output += `<p><b>${faq.question}</b>: ${faq.answer}</p>`;
+                });
+                document.getElementById("faqList").innerHTML = output;
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+</head>
+<body>
+    <h2>FAQs</h2>
+    <label for="language">Select Language:</label>
+    <select id="language" onchange="loadFAQs()">
+        <option value="en">English</option>
+        <option value="hi">Hindi</option>
+        <option value="bn">Bengali</option>
+    </select>
+
+    <div id="faqList"></div>
+
+    <script>loadFAQs();</script>
+</body>
+</html> {% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQs</title>
+    <script>
+        function loadFAQs() {
+            let lang = document.getElementById("language").value;
+
+            fetch(`/api/faqs/?lang=${lang}`)
+            .then(response => response.json())
+            .then(data => {
+                let output = "";
+                data.forEach(faq => {
+                    output += `<p><b>${faq.question}</b>: ${faq.answer}</p>`;
+                });
+                document.getElementById("faqList").innerHTML = output;
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+</head>
+<body>
+    <h2>FAQs</h2>
+    <label for="language">Select Language:</label>
+    <select id="language" onchange="loadFAQs()">
+        <option value="en">English</option>
+        <option value="hi">Hindi</option>
+        <option value="bn">Bengali</option>
+        <option value="fr">French</option>
+    </select>
+
+    <div id="faqList"></div>
+
+    <script>loadFAQs();</script>
+</body>
+</html>
+
+

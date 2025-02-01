@@ -1,0 +1,7 @@
+django
+django-ckeditor
+googletrans
+djangorestframework
+django-redis
+# ckeditor_uploader
+httpcore==0.12.0 
