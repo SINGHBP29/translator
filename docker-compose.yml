@@ -2,12 +2,21 @@ version: '3'
 
 services:
   web:
-    build: .
-    container_name: django_app
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     volumes:
-      - .:/app
+      - .:/usr/src/app
+    depends_on:
+      - redis
     environment:
-      - DEBUG=True
-      - DJANGO_SETTINGS_MODULE=myproject.settings  # Change `myproject` to your project name
+      - DJANGO_SETTINGS_MODULE=BharatFD.settings
+    command: >
+      bash -c "python manage.py runserver 0.0.0.0:8000"
+
+  redis:
+    image: redis:7.0  # Official Redis image
+    ports:
+      - "6379:6379"
