@@ -5,13 +5,13 @@ This project is a Django web application that runs inside a **Docker container**
 
 ## 📂 Project Structure
 ```
-├── myproject/        # Django Project
-│   ├── myapp/        # Django App
+├── myproject/( BharatFD)      # Django Project
 │   ├── settings.py   # Django Settings
 │   ├── urls.py       # URL Routing
 │   ├── views.py      # Views
 │   ├── models.py     # Database Models
-│   ├── templates/    # HTML Templates
+├── myapp/ ( app) # django app
+├── templates/    # HTML Templates
 ├── Dockerfile        # Docker Configuration
 ├── docker-compose.yml # Docker Compose Config
 ├── requirements.txt  # Python Dependencies
@@ -52,96 +52,124 @@ Features Implemented
 
 ✅ 1. FAQ Model with WYSIWYG Editor
 
-Uses django-ckeditor for rich text support.
-
-Stores FAQs with multilingual translations.
+    Uses django-ckeditor for rich text support.
+    
+    Stores FAQs with multilingual translations.
 
 ✅ 2. API Development
 
-Implements Django REST Framework (DRF).
-
-Supports ?lang= query parameter for language-based responses.
+    Implements Django REST Framework (DRF).
+    
+    Supports ?lang= query parameter for language-based responses.
 
 ✅ 3. Caching with Redis
 
-Uses django-redis for performance optimization.
-
-Stores translated FAQs in cache.
+    Uses django-redis for performance optimization.
+    
+    Stores translated FAQs in cache.
 
 ✅ 4. Multi-language Translation
 
-Integrates googletrans for automatic translations.
-
-Fallback mechanism to English if translation fails.
+    Integrates googletrans for automatic translations.
+    
+    Fallback mechanism to English if translation fails.
 
 ✅ 5. Admin Panel
 
-Registers FAQ model for easy management.
-
-Supports django-ckeditor in admin for rich text editing.
+    Registers FAQ model for easy management.
+    
+    Supports django-ckeditor in admin for rich text editing.
 
 ✅ 6. Unit Testing
 
-Uses pytest for testing.
-
-Covers models, API responses, and caching mechanisms.
+    Uses pytest for testing.
+    
+    Covers models, API responses, and caching mechanisms.
 
 ✅ 7. Docker & Deployment
 
-Includes Dockerfile and docker-compose.yml.
-
-Can be deployed to Heroku or AWS.
+    Includes Dockerfile and docker-compose.yml.
 
 API Endpoints
 
 Retrieve FAQs
 
 # Default (English)
-curl http://localhost:8000/api/faqs/
+    curl http://localhost:8000/api/faqs/
 
 # Hindi Translation
-curl http://localhost:8000/api/faqs/?lang=hi
+    curl http://localhost:8000/api/faqs/?lang=hi
 
 # Bengali Translation
-curl http://localhost:8000/api/faqs/?lang=bn
+    curl http://localhost:8000/api/faqs/?lang=bn
 
 Admin Panel
 
-Access the Django Admin at http://127.0.0.1:8000/admin/
-
-
-
+    Access the Django Admin at http://127.0.0.1:8000/admin/
 
 
 ## 🐳 Docker Configuration
 
 ### **Dockerfile**
 ```dockerfile
-FROM python:3.10
+FROM python:3.10-slim-buster
+
+# Set environment variables
 ENV PYTHONUNBUFFERED=1
-WORKDIR /app
-COPY . /app/
-RUN pip install --upgrade pip && pip install -r requirements.txt
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+# Set the working directory inside the container
+WORKDIR /usr/src/app
+
+# Copy only the requirements file first for layer caching
+COPY requirements.txt /usr/src/app/
+
+# Install system dependencies and Redis server
+RUN apt update && \
+    apt install -y redis-server && \
+    apt clean
+
+# # Create a virtual environment inside the container
+# RUN python -m venv /usr/src/app/env
+
+# # Set the virtual environment as default
+# ENV PATH="/usr/src/app/env/bin:$PATH"
+
+# Install Python dependencies inside the virtual environment
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt
+
+# Copy the rest of the application code
+COPY . /usr/src/app/
+
+# Expose the default Django port
+EXPOSE 8000
+
+# Start Redis and the Django development server
+CMD service redis-server start && python manage.py runserver 0.0.0.0:8000
 ```
 
 ### **docker-compose.yml**
 ```yaml
 version: '3'
+
 services:
   web:
-    build: .
-    container_name: django_app
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     volumes:
-      - .:/app
+      - .:/usr/src/app
     depends_on:
       - redis
+    environment:
+      - DJANGO_SETTINGS_MODULE=BharatFD.settings
+    command: >
+      bash -c "python manage.py runserver 0.0.0.0:8000"
 
   redis:
-    image: "redis:alpine"
-    container_name: redis_cache
+    image: redis:7.0  # Official Redis image
     ports:
       - "6379:6379"
 ```
