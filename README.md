@@ -210,16 +210,20 @@ CACHES = {
 
 ## 📌 Notes
 - The **SQLite database (`db.sqlite3`)** is stored in the container, so **it won't persist** if the container is removed.
-- To persist the database, **mount a volume** or switch to **PostgreSQL or MySQL**.
 - Update `.gitignore` to **ignore `db.sqlite3`**.
 
----
+## Example 
+Ask in the python shell 
+ ## activate('en') # English
+        print(_("Django is a high-level Python web framework that allows rapid development of secure and maintainable websites."))
+### Answer
+    Django is a high-level Python web framework that allows rapid development of secure and maintainable websites.
+## activate('hi') # Hindi
+    print(_("Django is a high-level Python web framework that allows rapid development of secure and maintainable websites."))
+## Answer
+    Django एक उच्च-स्तरीय Python वेब फ्रेमवर्क है जो सुरक्षित और सुव्यवस्थित वेबसाइटों के त्वरित विकास की अनुमति देता है।
 
-## 💡 Next Steps
-- Add **Redis** for caching.
-- Deploy with **Gunicorn & Nginx**.
 
----
 
 ### 💬 Need Help?
 If you face any issues, feel free to open an **issue** on GitHub! or Email me at **bhanups292004@gmail.com** 🚀
